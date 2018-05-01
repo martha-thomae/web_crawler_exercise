@@ -12,10 +12,17 @@ import requests
 from lxml import html
 
 start_url = "http://econpy.pythonanywhere.com/ex/001.html"
-page = requests.get(start_url)
-tree = html.fromstring(page.content)
-html_refs = tree.xpath('//a[@href]')
 
-urls = [ref.get('href') for ref in html_refs]
+max_iter = 2
 
-print(urls)
+def fetch(url):
+    page = requests.get(url)
+
+    # Get all the links on this page
+    tree = html.fromstring(page.content)
+    html_refs = tree.xpath('//a[@href]')
+    urls = [ref.get('href') for ref in html_refs]
+    return(urls)
+    #[fetch(url) for url in urls]
+
+fetch(start_url)
